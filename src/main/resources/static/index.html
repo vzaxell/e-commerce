@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E-Commerce Dashboard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#f4f6f8; margin:0; padding:2rem; }
+    .card { max-width:520px; margin:auto; background:#fff; padding:1.5rem; border-radius:12px; box-shadow:0 2px 10px #0002; }
+    input, button { padding:.6rem; font-size:1rem; }
+    button { background:#2563eb; color:#fff; border:0; border-radius:6px; cursor:pointer; }
+    .badge { padding:.2rem .6rem; border-radius:99px; font-size:.85rem; color:#fff; }
+    .IN_STOCK, .SUCCESS { background:#16a34a; }
+    .OUT_OF_STOCK, .ERROR { background:#dc2626; }
+    .UNKNOWN, .PARTIAL_SUCCESS { background:#d97706; }
+    .row { display:flex; justify-content:space-between; padding:.4rem 0; border-bottom:1px solid #eee; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Detalle de producto</h2>
+    <input id="pid" value="P-101" placeholder="ID (P-101)">
+    <button onclick="load()">Consultar</button>
+    <div id="out" style="margin-top:1rem"></div>
+  </div>
+
+  <script>
+    async function load() {
+      const id = document.getElementById('pid').value.trim();
+      const out = document.getElementById('out');
+      out.textContent = 'Cargando...';
+      try {
+        const res = await fetch(`/api/v1/product-summary/${encodeURIComponent(id)}`);
+        const d = await res.json();
+        if (!res.ok) { out.innerHTML = `<span class="badge ERROR">ERROR ${d.status}</span> ${d.message}`; return; }
+        const fmt = (n, c) => n == null ? 'N/D' : new Intl.NumberFormat('es-MX', {style:'currency', currency:c}).format(n);
+        out.innerHTML = `
+          <h3>${d.title} <small>(${d.product_id})</small></h3>
+          <div class="row"><span>Precio USD</span><b>${fmt(d.price_usd,'USD')}</b></div>
+          <div class="row"><span>Precio MXN</span><b>${fmt(d.price_mxn,'MXN')}</b></div>
+          <div class="row"><span>Stock</span><span class="badge ${d.stock_status}">${d.stock_status}</span></div>
+          <div class="row"><span>Unidades</span><b>${d.available_units ?? 'N/D'}</b></div>
+          <div class="row"><span>Fuente tipo de cambio</span><span>${d.currency_conversion_source}</span></div>
+          <div class="row"><span>Estado</span><span class="badge ${d.status}">${d.status}</span></div>
+          ${d.warnings ? `<p>⚠️ ${d.warnings.join(', ')}</p>` : ''}`;
+      } catch (e) { out.textContent = 'Error de conexión con el servidor'; }
+    }
+    load();
+  </script>
+</body>
+</html>
