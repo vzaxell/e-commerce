@@ -1,6 +1,6 @@
 # E-Commerce Gateway & Dashboard: Composite API
 
-Proyecto de la asignatura **Desarrollo Web Integral, Unidad 3**, del programa educativo de Desarrollo y Gestión de Software de la Universidad Tecnológica de Chihuahua (UTCH).
+Proyecto de la asignatura **Desarrollo Web Integral, Unidad 3**, de Desarrollo y Gestión de Software de la Universidad Tecnológica de Chihuahua (UTCH).
 
 El sistema implementa el patrón **Composite API (API Aggregator)**: un único endpoint consulta de forma concurrente un catálogo de productos, un inventario y una API externa de tipos de cambio, y devuelve una sola respuesta JSON consolidada. Incluye un dashboard web que consume exclusivamente dicho endpoint.
 
@@ -342,7 +342,7 @@ Las capturas de pantalla de las pruebas se encuentran en la carpeta [`docs/`](do
 
 ## 14. Autoría
 
-**[Nombre del alumno]**
+**[Axel Noe Nuñez Vargas]**
 Universidad Tecnológica de Chihuahua (UTCH)
 Programa Educativo: Desarrollo y Gestión de Software
-Grupo: [Grupo]
+Grupo: [IDSG91N]
